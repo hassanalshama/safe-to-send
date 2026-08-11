@@ -14,7 +14,7 @@
 
 <p align="center">
   <a href="https://github.com/hassanalshama/safe-to-send/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/hassanalshama/safe-to-send/actions/workflows/ci.yml/badge.svg"></a>
-  <a href="https://www.npmjs.com/package/safe-to-send"><img alt="npm" src="https://img.shields.io/npm/v/safe-to-send"></a>
+  <a href="https://github.com/hassanalshama/safe-to-send/releases/latest"><img alt="GitHub release" src="https://img.shields.io/github/v/release/hassanalshama/safe-to-send"></a>
   <a href="LICENSE"><img alt="Apache-2.0 license" src="https://img.shields.io/badge/license-Apache--2.0-1e5b47"></a>
   <img alt="Zero runtime dependencies" src="https://img.shields.io/badge/runtime_dependencies-0-1e5b47">
 </p>
@@ -29,18 +29,14 @@ Safe to Send inspects the saved file itself. The browser app performs the scan l
 
 ## Try it
 
-Open the [browser scanner](https://hassanalshama.github.io/safe-to-send/), or run the CLI:
-
-```bash
-npx safe-to-send proposal.pptx
-npx safe-to-send contract.pdf
-```
-
-Until the npm package is published, run directly from GitHub:
+Open the [browser scanner](https://hassanalshama.github.io/safe-to-send/), or run the CLI directly from GitHub:
 
 ```bash
 npx github:hassanalshama/safe-to-send proposal.pptx
+npx github:hassanalshama/safe-to-send contract.pdf
 ```
+
+The npm package will be added after its first interactive, two-factor-authenticated publication.
 
 Example result:
 
@@ -158,7 +154,7 @@ jobs:
 
 The action fails the job when the selected threshold is met and always writes the SARIF report before exiting.
 
-Before the first tagged release, use `hassanalshama/safe-to-send@main`. After publishing version `0.x`, create or move the major tag `v0` to the released commit.
+Use `hassanalshama/safe-to-send@v0` for the latest compatible 0.x release. Pin a full version tag or commit SHA when your policy requires an immutable dependency.
 
 ## Command-line reference
 
