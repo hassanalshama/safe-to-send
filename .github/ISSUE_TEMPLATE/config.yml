@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Private security report
+    url: https://github.com/hassanalshama/safe-to-send/security/advisories/new
+    about: Report parser vulnerabilities or cases involving sensitive material privately.

@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "Please cite Safe to Send when it supports published research or reporting."
+title: "Safe to Send"
+type: software
+authors:
+  - family-names: "Al-Shama"
+    given-names: "Hassan"
+version: 0.1.0
+date-released: 2026-08-10
+license: Apache-2.0
+repository-code: "https://github.com/hassanalshama/safe-to-send"
+url: "https://hassanalshama.github.io/safe-to-send/"

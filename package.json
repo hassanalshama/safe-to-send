@@ -1,0 +1,59 @@
+{
+  "name": "safe-to-send",
+  "version": "0.1.0",
+  "description": "Inspect PDFs and PowerPoint files for hidden, recoverable, or private content before sharing.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "author": "Hassan Al-Shama",
+  "bin": {
+    "safe-to-send": "cli/safe-to-send.mjs"
+  },
+  "exports": {
+    ".": "./core/index.mjs",
+    "./report-schema": "./docs/report-schema.json"
+  },
+  "files": [
+    "cli/",
+    "core/",
+    "docs/report-schema.json",
+    "README.md",
+    "LICENSE",
+    "NOTICE",
+    "DISCLOSURE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/check.mjs",
+    "fixtures": "node scripts/generate-fixtures.mjs",
+    "scan": "node cli/safe-to-send.mjs",
+    "test": "node --test --test-reporter=spec",
+    "verify": "npm run fixtures && npm run check && npm test && npm run build && node scripts/release-check.mjs",
+    "dev": "node scripts/serve.mjs"
+  },
+  "keywords": [
+    "pdf",
+    "powerpoint",
+    "pptx",
+    "privacy",
+    "redaction",
+    "metadata",
+    "security",
+    "document",
+    "scanner",
+    "local-first"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hassanalshama/safe-to-send.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hassanalshama/safe-to-send/issues"
+  },
+  "homepage": "https://hassanalshama.github.io/safe-to-send/",
+  "contentPolicy": {
+    "class": "dual-use"
+  }
+}

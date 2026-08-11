@@ -1,0 +1,29 @@
+name: Detector or feature request
+description: Propose a focused check or workflow improvement with concrete demand.
+title: "proposal: "
+labels: [enhancement]
+body:
+  - type: textarea
+    attributes:
+      label: Recipient-visible risk or workflow problem
+      description: State the exact problem. Do not start with an implementation.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Evidence of need
+      description: Link to public specifications, vendor documentation, reproducible examples, or repeated user reports.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Proposed scope
+      description: Define the smallest useful release and explicit non-goals.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Detection evidence and limits
+      description: Explain what can be detected deterministically and where false positives or false negatives arise.
+    validations:
+      required: true

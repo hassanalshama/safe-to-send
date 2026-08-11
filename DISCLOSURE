@@ -1,0 +1,13 @@
+SAFE TO SEND — DUAL-USE DISCLOSURE
+
+Safe to Send is a defensive document privacy auditing tool. It inspects PDF and Microsoft PowerPoint files for hidden, recoverable, or private content, including ineffective visual redaction, speaker notes, hidden slides, embedded files, metadata, active content, and concealed text.
+
+Intended use
+- Review documents you own or are authorized to inspect before sharing.
+- Test document-handling processes and redaction controls.
+- Support authorized security research, incident response, and privacy review.
+
+Potential misuse
+The same inspection capabilities could be used to recover information from files without the owner's authorization. Do not use Safe to Send to access, expose, retain, or distribute information you are not authorized to inspect.
+
+Safe to Send does not bypass encryption, authentication, or access controls. Users are responsible for complying with applicable law, contractual obligations, and organizational policy.

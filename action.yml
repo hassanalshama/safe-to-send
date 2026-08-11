@@ -1,0 +1,62 @@
+name: Safe to Send
+description: Inspect PDF and PowerPoint deliverables for hidden, recoverable, or private content.
+author: Hassan Al-Shama
+branding:
+  icon: shield
+  color: green
+inputs:
+  path:
+    description: File or directory to scan.
+    required: false
+    default: .
+  recursive:
+    description: Scan supported files below a directory recursively.
+    required: false
+    default: "true"
+  fail-on:
+    description: "Lowest severity that fails the action: high, medium, low, info, or never."
+    required: false
+    default: high
+  max-size:
+    description: "Per-file safety limit, such as 100MB or 1GB."
+    required: false
+    default: 512MB
+  report:
+    description: SARIF report path.
+    required: false
+    default: safe-to-send.sarif
+outputs:
+  report:
+    description: Path to the generated SARIF report.
+    value: ${{ steps.scan.outputs.report }}
+  exit-code:
+    description: Scanner exit code.
+    value: ${{ steps.scan.outputs.exit-code }}
+runs:
+  using: composite
+  steps:
+    - id: scan
+      shell: bash
+      env:
+        STS_PATH: ${{ inputs.path }}
+        STS_RECURSIVE: ${{ inputs.recursive }}
+        STS_FAIL_ON: ${{ inputs.fail-on }}
+        STS_MAX_SIZE: ${{ inputs.max-size }}
+        STS_REPORT: ${{ inputs.report }}
+      run: |
+        args=(--format sarif --output "$STS_REPORT" --fail-on "$STS_FAIL_ON" --max-size "$STS_MAX_SIZE")
+        if [[ "$STS_RECURSIVE" == "true" ]]; then
+          args+=(--recursive)
+        fi
+        set +e
+        node "$GITHUB_ACTION_PATH/cli/safe-to-send.mjs" "${args[@]}" "$STS_PATH"
+        status=$?
+        set -e
+        echo "report=$STS_REPORT" >> "$GITHUB_OUTPUT"
+        echo "exit-code=$status" >> "$GITHUB_OUTPUT"
+        if [[ -f "$STS_REPORT" ]]; then
+          echo "### Safe to Send" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "SARIF report: \`$STS_REPORT\`" >> "$GITHUB_STEP_SUMMARY"
+        fi
+        exit "$status"

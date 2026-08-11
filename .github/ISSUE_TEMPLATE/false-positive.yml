@@ -1,0 +1,28 @@
+name: False positive
+description: Report a finding that does not represent the evidence described by its rule.
+title: "false positive: "
+labels: [false-positive]
+body:
+  - type: checkboxes
+    attributes:
+      label: Data safety
+      options:
+        - label: The example is synthetic and contains no confidential or personal data.
+          required: true
+  - type: input
+    attributes:
+      label: Rule ID
+      placeholder: pdf.redaction.overlay
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Why the evidence is wrong
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Minimal reproduction
+      description: Include a generator or synthetic fixture.
+    validations:
+      required: true

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#10231d">
+  <meta name="description" content="How to remove speaker notes from PowerPoint before sharing, inspect the final PPTX, and verify that notes and orphaned note parts are gone.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+  <link rel="canonical" href="https://hassanalshama.github.io/safe-to-send/guides/remove-powerpoint-speaker-notes.html"><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../styles.css">
+  <title>Remove speaker notes from PowerPoint before sharing — Safe to Send</title>
+</head>
+<body>
+  <header class="site-header"><div class="shell header-inner"><a class="brand" href="../"><img src="../assets/logo.svg" alt="" width="32" height="32"><span>Safe to Send</span></a><nav class="nav"><a href="../methodology.html">Methodology</a><a href="../cli.html">CLI</a><a href="https://github.com/hassanalshama/safe-to-send">GitHub</a></nav></div></header>
+  <main>
+    <section class="page-hero shell"><p class="section-kicker">PowerPoint notes guide</p><h1>Remove the notes from the copy you will actually send.</h1><p>Speaker notes are part of the presentation file. Hiding the notes pane, exporting a slide view, or assuming recipients will not look does not remove them.</p><div class="guide-meta"><span>PowerPoint</span><span>Distribution copy</span><span>Local verification</span></div></section>
+    <div class="prose-layout shell"><nav class="prose-nav"><a href="#copy">Make a copy</a><a href="#remove">Remove notes</a><a href="#inspect">Inspect</a><a href="#verify">Verify</a></nav><article class="prose">
+      <h2 id="copy">Start with a distribution copy</h2>
+      <p>Use <strong>Save As</strong> to create a separate file with a clear name such as <code>Board-Update-External.pptx</code>. Do not remove working notes from the only source file. Microsoft recommends using Document Inspector on a copy because removed hidden content may not be recoverable.</p>
+
+      <h2 id="remove">Remove speaker notes</h2>
+      <ol>
+        <li>Open the distribution copy.</li>
+        <li>Select <strong>File → Info → Check for Issues → Inspect Document</strong>.</li>
+        <li>Select the presentation notes, comments, document properties, and other relevant inspectors.</li>
+        <li>Run the inspection and remove the items you do not intend to deliver.</li>
+        <li>Save, close, and reopen the file.</li>
+      </ol>
+      <p>Exact labels can vary across PowerPoint versions. Microsoft’s current instructions are in <a href="https://support.microsoft.com/en-us/office/collab-files/remove-hidden-data-and-personal-information-by-inspecting-documents-presentations-or-workbooks">Remove hidden data and personal information</a>.</p>
+      <div class="callout"><p><strong>Deleting visible note text is not the entire check.</strong> A package can also retain comments, hidden slides, custom XML, embedded objects, off-slide material, author fields, and external paths.</p></div>
+
+      <h2 id="inspect">Inspect the broader sharing copy</h2>
+      <ul>
+        <li>Delete hidden slides that are not meant for the recipient. “Hidden” means excluded from the normal slide show, not removed.</li>
+        <li>Review comments and collaboration identities.</li>
+        <li>Check embedded spreadsheets and documents. Replace them with reviewed static images when underlying data should not travel.</li>
+        <li>Delete off-slide objects and hidden objects.</li>
+        <li>Permanently crop images or use PowerPoint’s option to delete cropped areas.</li>
+        <li>Break links to local spreadsheets, internal network paths, or recipient-specific URLs.</li>
+        <li>Remove author, company, manager, template, and custom document properties where appropriate.</li>
+      </ul>
+
+      <h2 id="verify">Verify the final bytes</h2>
+      <ol>
+        <li>Close PowerPoint so the latest save is flushed to disk.</li>
+        <li>Scan the final <code>.pptx</code> with Safe to Send.</li>
+        <li>Review every high and medium finding.</li>
+        <li>Confirm the report says coverage is complete.</li>
+        <li>Match the report’s SHA-256 fingerprint to the attachment.</li>
+      </ol>
+      <p><a class="text-link" href="../">Scan the presentation locally →</a></p>
+      <p>The <a href="../examples/unsafe-sample.pptx" download>unsafe sample presentation</a> contains notes, a hidden slide, a hidden object, an off-slide object, comments, an embedded file, a cropped image, metadata, custom XML, and external paths for testing.</p>
+    </article></div>
+  </main>
+  <footer class="site-footer"><div class="shell footer-bottom"><span>Safe to Send · local-only document inspection</span><span><a href="../">Scanner</a> · <a href="../privacy.html">Privacy</a> · <a href="https://github.com/hassanalshama/safe-to-send">GitHub</a></span></div></footer>
+</body></html>

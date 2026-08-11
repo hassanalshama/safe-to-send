@@ -1,0 +1,13 @@
+{
+  "name": "Safe to Send",
+  "short_name": "Safe to Send",
+  "description": "Inspect PDFs and PowerPoint files for hidden, recoverable, or private content before sharing.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f5f0",
+  "theme_color": "#102f27",
+  "icons": [
+    { "src": "assets/logo.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

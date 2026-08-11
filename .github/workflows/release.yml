@@ -1,0 +1,70 @@
+name: Stage npm package
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run verify
+
+      - name: Read package coordinates
+        id: package
+        shell: bash
+        run: |
+          echo "name=$(node -p \"require('./package.json').name\")" >> "$GITHUB_OUTPUT"
+          echo "version=$(node -p \"require('./package.json').version\")" >> "$GITHUB_OUTPUT"
+
+      - name: Check npm registry
+        id: registry
+        shell: bash
+        run: |
+          NAME="${{ steps.package.outputs.name }}"
+          VERSION="${{ steps.package.outputs.version }}"
+
+          if npm view "$NAME@$VERSION" version >/dev/null 2>&1; then
+            echo "package_exists=true" >> "$GITHUB_OUTPUT"
+            echo "version_exists=true" >> "$GITHUB_OUTPUT"
+          elif npm view "$NAME" name >/dev/null 2>&1; then
+            echo "package_exists=true" >> "$GITHUB_OUTPUT"
+            echo "version_exists=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "package_exists=false" >> "$GITHUB_OUTPUT"
+            echo "version_exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Upgrade npm for staged publishing
+        if: steps.registry.outputs.package_exists == 'true' && steps.registry.outputs.version_exists != 'true'
+        run: npm install --global npm@^11.15.0
+
+      - name: Stage package for maintainer approval
+        if: steps.registry.outputs.package_exists == 'true' && steps.registry.outputs.version_exists != 'true'
+        run: npm stage publish
+
+      - name: Confirm existing version
+        if: steps.registry.outputs.version_exists == 'true'
+        run: echo "This version is already published on npm; no staged publish is required."
+
+      - name: First publication guidance
+        if: steps.registry.outputs.package_exists != 'true'
+        run: |
+          echo "The package does not yet exist on npm. Publish the first version interactively with 2FA before creating a GitHub release."
+          exit 1

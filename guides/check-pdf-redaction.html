@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#10231d">
+  <meta name="description" content="How to check whether PDF redaction removed the underlying text, inspect hidden PDF data, sanitize the result, and verify the exact file before sharing.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+  <link rel="canonical" href="https://hassanalshama.github.io/safe-to-send/guides/check-pdf-redaction.html"><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../styles.css">
+  <meta property="og:title" content="How to check whether a PDF is properly redacted"><meta property="og:description" content="Verify the underlying content was removed—not merely covered.">
+  <title>How to check whether a PDF is properly redacted — Safe to Send</title>
+</head>
+<body>
+  <header class="site-header"><div class="shell header-inner"><a class="brand" href="../"><img src="../assets/logo.svg" alt="" width="32" height="32"><span>Safe to Send</span></a><nav class="nav"><a href="../methodology.html">Methodology</a><a href="../cli.html">CLI</a><a href="https://github.com/hassanalshama/safe-to-send">GitHub</a></nav></div></header>
+  <main>
+    <section class="page-hero shell"><p class="section-kicker">PDF redaction guide</p><h1>Check whether the text was removed—or only covered.</h1><p>A black rectangle can make text disappear on screen while leaving it selectable, searchable, copyable, or extractable from the PDF.</p><div class="guide-meta"><span>7-minute check</span><span>No upload required</span><span>PDF</span></div></section>
+    <div class="prose-layout shell"><nav class="prose-nav"><a href="#failure">Failure mode</a><a href="#check">How to check</a><a href="#fix">How to fix</a><a href="#verify">Final verification</a></nav><article class="prose">
+      <h2 id="failure">Why visual redaction can fail</h2>
+      <p>PDF stores drawing commands and content objects. Adding a filled rectangle over text can change what the page looks like without deleting the text object. Flattening, printing, or exporting can also preserve hidden metadata, comments, attachments, layers, form values, or older revisions.</p>
+      <div class="callout warning"><p><strong>Do not test a sensitive PDF by uploading it to an unknown online checker.</strong> Use an approved local tool or Safe to Send’s browser-local scanner.</p></div>
+
+      <h2 id="check">A practical redaction check</h2>
+      <ol>
+        <li><strong>Work on the final delivered file.</strong> Do not inspect the source Word file or the PDF from before the last edit.</li>
+        <li><strong>Try to select and copy across every redacted area.</strong> Paste into a plain-text editor. This catches basic overlay failures but is not sufficient.</li>
+        <li><strong>Search for a distinctive redacted word or number.</strong> Search may reveal recoverable text even when selection does not.</li>
+        <li><strong>Extract text with a second PDF tool.</strong> Different readers interpret content differently.</li>
+        <li><strong>Inspect comments, attachments, form fields, layers, and document properties.</strong></li>
+        <li><strong>Scan the exact file with Safe to Send.</strong> The scanner decodes supported streams and warns when text geometry appears covered by an opaque rectangle.</li>
+      </ol>
+      <p><a class="text-link" href="../">Open the local scanner →</a></p>
+
+      <h2 id="fix">How to fix a failed redaction</h2>
+      <p>Return to the unredacted source in a controlled environment. Use a true redaction workflow that marks content for removal and applies the redactions. Then sanitize hidden information and save to a new filename.</p>
+      <p>Adobe distinguishes redaction from sanitization: redaction removes marked visible content, while sanitization removes hidden data such as metadata, embedded content, and scripts. Follow the current instructions for your approved PDF application. Adobe’s current guidance is available in <a href="https://helpx.adobe.com/acrobat/desktop/protect-documents/redact-pdfs/redacting-sanitizing.html">About redacting and sanitizing PDFs</a>.</p>
+      <p>Do not “fix” a redaction by drawing a thicker rectangle, changing the text color, moving the text off-page, or taking a screenshot unless that output is independently reviewed and acceptable for the use case.</p>
+
+      <h2 id="verify">Final verification checklist</h2>
+      <ul>
+        <li>Open the newly saved file, not the file still open in the editor.</li>
+        <li>Search, select, copy, and extract around every redaction.</li>
+        <li>Check attachments, annotations, form values, layers, metadata, scripts, and prior revisions.</li>
+        <li>Run Safe to Send and confirm coverage is complete.</li>
+        <li>Compare the SHA-256 fingerprint in the report with the exact attachment being delivered.</li>
+        <li>For consequential disclosure, obtain independent human review.</li>
+      </ul>
+      <p>Use the included <a href="../examples/unsafe-sample.pdf" download>intentionally unsafe sample PDF</a> to see what a recoverable overlay looks like without risking a real document.</p>
+    </article></div>
+  </main>
+  <footer class="site-footer"><div class="shell footer-bottom"><span>Safe to Send · local-only document inspection</span><span><a href="../">Scanner</a> · <a href="../privacy.html">Privacy</a> · <a href="https://github.com/hassanalshama/safe-to-send">GitHub</a></span></div></footer>
+</body></html>

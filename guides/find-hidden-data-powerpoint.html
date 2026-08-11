@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#10231d">
+  <meta name="description" content="A complete checklist for finding hidden data in PowerPoint: notes, hidden slides, comments, embedded files, off-slide objects, cropped images, metadata, links, and macros.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+  <link rel="canonical" href="https://hassanalshama.github.io/safe-to-send/guides/find-hidden-data-powerpoint.html"><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../styles.css">
+  <title>Find hidden data in a PowerPoint file — Safe to Send</title>
+</head>
+<body>
+  <header class="site-header"><div class="shell header-inner"><a class="brand" href="../"><img src="../assets/logo.svg" alt="" width="32" height="32"><span>Safe to Send</span></a><nav class="nav"><a href="../methodology.html">Methodology</a><a href="../cli.html">CLI</a><a href="https://github.com/hassanalshama/safe-to-send">GitHub</a></nav></div></header>
+  <main>
+    <section class="page-hero shell"><p class="section-kicker">PowerPoint inspection guide</p><h1>The slide canvas is only one view of the file.</h1><p>A PPTX can contain notes, comments, source images, embedded workbooks, hidden objects, paths, identities, macros, and application data that never appears in the normal presentation view.</p><div class="guide-meta"><span>PPTX package</span><span>12-point checklist</span><span>No upload</span></div></section>
+    <div class="prose-layout shell"><nav class="prose-nav"><a href="#checklist">Checklist</a><a href="#package">Inside the package</a><a href="#workflow">Release workflow</a></nav><article class="prose">
+      <h2 id="checklist">What to inspect</h2>
+      <table><thead><tr><th>Risk</th><th>Why it matters</th></tr></thead><tbody>
+        <tr><td>Speaker notes</td><td>Stored as separate note parts and readable by recipients.</td></tr>
+        <tr><td>Hidden slides</td><td>Excluded from normal presentation flow but still fully present.</td></tr>
+        <tr><td>Hidden and off-slide objects</td><td>Text or shapes can remain outside the canvas or be marked hidden.</td></tr>
+        <tr><td>Comments and authors</td><td>Can expose draft decisions, names, review history, and internal language.</td></tr>
+        <tr><td>Embedded workbooks or documents</td><td>Recipients may extract the original file and all underlying rows, formulas, sheets, or metadata.</td></tr>
+        <tr><td>Cropped images</td><td>The package can retain the uncropped source image.</td></tr>
+        <tr><td>Image metadata</td><td>Original images can carry GPS coordinates, camera serials, dates, authors, or software fields.</td></tr>
+        <tr><td>External links</td><td>Local paths can reveal usernames, servers, folders, and internal sources.</td></tr>
+        <tr><td>Document properties</td><td>Creator, last editor, company, manager, template, and custom properties are inspectable.</td></tr>
+        <tr><td>Custom XML</td><td>Application-specific records may travel even when no slide displays them.</td></tr>
+        <tr><td>Macros</td><td>VBA is executable content and may carry code or concealed data.</td></tr>
+        <tr><td>Package anomalies</td><td>Encrypted entries, duplicate paths, CRC errors, or extension mismatches weaken confidence in any inspection.</td></tr>
+      </tbody></table>
+
+      <h2 id="package">Why package-level inspection is different</h2>
+      <p>A modern PowerPoint file is a ZIP package of XML, media, relationship, and binary parts. The application composes those parts into a slide view. A recipient can inspect the package directly or use software that exposes material omitted from the normal canvas.</p>
+      <p>Safe to Send validates the archive, verifies entry checksums, follows slide and note relationships, inspects hidden flags and geometry, reads metadata, checks embedded image metadata, and identifies unlinked package parts. It does not need to upload the file or render the presentation.</p>
+      <div class="callout"><p><strong>Use both controls.</strong> PowerPoint Document Inspector knows application-specific behavior. An independent package scan checks what actually remained in the saved file. Neither should be treated as an absolute guarantee.</p></div>
+
+      <h2 id="workflow">A disciplined release workflow</h2>
+      <ol>
+        <li>Create a distribution copy.</li>
+        <li>Remove notes, comments, hidden slides, embedded working files, and unneeded links.</li>
+        <li>Permanently crop and strip metadata from images.</li>
+        <li>Run PowerPoint Document Inspector on the copy.</li>
+        <li>Save, close, and reopen it.</li>
+        <li>Scan the final file with Safe to Send.</li>
+        <li>Resolve findings and repeat until the report reflects the intended content and complete coverage.</li>
+        <li>Record the SHA-256 fingerprint or attach the report to the release record.</li>
+      </ol>
+      <p><a class="text-link" href="../">Inspect a PowerPoint file now →</a></p>
+    </article></div>
+  </main>
+  <footer class="site-footer"><div class="shell footer-bottom"><span>Safe to Send · local-only document inspection</span><span><a href="../">Scanner</a> · <a href="../privacy.html">Privacy</a> · <a href="https://github.com/hassanalshama/safe-to-send">GitHub</a></span></div></footer>
+</body></html>

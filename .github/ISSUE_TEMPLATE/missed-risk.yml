@@ -1,0 +1,37 @@
+name: Missed synthetic risk
+description: Report a false negative using a synthetic or generated file.
+title: "missed: "
+labels: [false-negative]
+body:
+  - type: checkboxes
+    attributes:
+      label: Data safety
+      options:
+        - label: The example is synthetic and contains no confidential or personal data.
+          required: true
+        - label: This is not a security exploit requiring private disclosure.
+          required: true
+  - type: dropdown
+    attributes:
+      label: Format
+      options: [PDF, PPTX, PPTM, PPSX, PPSM, POTX, POTM]
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Concealment method
+      description: Explain exactly where the data is stored and why a recipient can recover it.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Minimal reproduction
+      description: Prefer a generator script or the smallest possible synthetic file.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Scanner report
+      description: Paste JSON with synthetic evidence only.
+    validations:
+      required: true

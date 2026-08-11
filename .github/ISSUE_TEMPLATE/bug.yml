@@ -1,0 +1,43 @@
+name: Bug report
+description: Report a reproducible scanner, CLI, or browser defect.
+title: "bug: "
+labels: [bug]
+body:
+  - type: checkboxes
+    attributes:
+      label: Data safety
+      options:
+        - label: I am not attaching a confidential file, real credential, or personal data.
+          required: true
+  - type: input
+    attributes:
+      label: Version
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Surface
+      options: [Browser, CLI, Scanner core, Report, Build or CI]
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Reproduction
+      description: Include the exact command or browser steps and a synthetic fixture when possible.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected result
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Actual result
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Environment
+      description: Operating system, Node.js version, and browser version where relevant.

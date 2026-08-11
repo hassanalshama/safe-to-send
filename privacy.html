@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#10231d">
+  <meta name="description" content="Safe to Send privacy design: no upload, no analytics, no account, no remote scripts, and no network access during browser scanning.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+  <link rel="canonical" href="https://hassanalshama.github.io/safe-to-send/privacy.html"><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css">
+  <title>Privacy — Safe to Send</title>
+</head>
+<body>
+  <header class="site-header"><div class="shell header-inner"><a class="brand" href="./"><img src="assets/logo.svg" alt="" width="32" height="32"><span>Safe to Send</span></a><nav class="nav"><a href="methodology.html">Methodology</a><a href="cli.html">CLI</a><a href="https://github.com/hassanalshama/safe-to-send">GitHub</a></nav></div></header>
+  <main><section class="page-hero shell"><p class="section-kicker">Privacy</p><h1>Your file is processed on your device.</h1><p>The browser scanner has no upload path, account system, analytics, advertising, telemetry, remote model, or remote dependency.</p></section><div class="prose-layout shell"><div></div><article class="prose">
+    <h2>Browser scanner</h2><p>When you choose a file, the browser reads its bytes and transfers them to a dedicated local worker. Findings are returned to the page in memory. The file and report are not intentionally stored after you close or reload the page.</p>
+    <p>The page’s Content Security Policy sets <code>connect-src 'none'</code>. The shipped application contains no code that sends file content or report content to a server.</p>
+    <h2>Hosting logs</h2><p>The static site may be hosted by GitHub Pages. Like most web hosts, GitHub may receive ordinary request information when your browser downloads the public page files, such as your IP address and requested URL. Safe to Send does not receive the document you inspect through those requests.</p>
+    <h2>CLI</h2><p>The CLI reads local files, computes a local report, and writes only where you direct it. It makes no network request. Package installation is a separate network operation performed by npm or Git.</p>
+    <h2>Exported reports</h2><p>Reports can contain excerpts of hidden material, file paths, names, comments, URLs, or redacted credential fragments. Protect exported reports as carefully as the underlying document.</p>
+    <h2>Verification</h2><p>The code is available for inspection. Network use can also be verified in browser developer tools: after the static page has loaded, scanning should create no network request.</p>
+    <h2>Changes</h2><p>If a future version adds an optional network feature, it must be disabled by default, clearly disclosed before use, isolated from the local scanner, and documented in this page and the changelog.</p>
+  </article></div></main>
+  <footer class="site-footer"><div class="shell footer-bottom"><span>Safe to Send · local-only document inspection</span><span><a href="./">Scanner</a> · <a href="methodology.html">Methodology</a> · <a href="https://github.com/hassanalshama/safe-to-send">GitHub</a></span></div></footer>
+</body></html>

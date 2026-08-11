@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#10231d">
+  <meta name="description" content="How Safe to Send inspects PDF and PowerPoint files, assigns severity and confidence, protects privacy, and reports coverage limits.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+  <link rel="canonical" href="https://hassanalshama.github.io/safe-to-send/methodology.html"><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css">
+  <title>Methodology — Safe to Send</title>
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="site-header"><div class="shell header-inner"><a class="brand" href="./"><img src="assets/logo.svg" alt="" width="32" height="32"><span>Safe to Send</span></a><nav class="nav"><a href="methodology.html" aria-current="page">Methodology</a><a href="cli.html">CLI</a><a href="https://github.com/hassanalshama/safe-to-send">GitHub</a></nav></div></header>
+  <main id="content">
+    <section class="page-hero shell"><p class="section-kicker">Methodology</p><h1>What the scanner checks, and where it can be wrong.</h1><p>Safe to Send reports evidence from deterministic file-format checks. It is deliberately conservative about coverage and explicit about confidence.</p></section>
+    <div class="prose-layout shell">
+      <nav class="prose-nav" aria-label="On this page"><a href="#principles">Principles</a><a href="#powerpoint">PowerPoint</a><a href="#pdf">PDF</a><a href="#sensitive">Sensitive values</a><a href="#severity">Severity</a><a href="#coverage">Coverage</a><a href="#limits">Limitations</a><a href="#security">Security model</a></nav>
+      <article class="prose">
+        <h2 id="principles">Principles</h2>
+        <p>The scanner is built around four rules: inspect the delivered bytes rather than the editing interface; distinguish evidence from inference; treat incomplete coverage as a result; and never call a file safe.</p>
+        <p>Every finding has a stable rule ID, severity, confidence, location, evidence excerpt, and remediation. Reports also contain the file’s SHA-256 fingerprint so the result can be tied to the exact bytes that were scanned.</p>
+        <div class="callout"><p><strong>Verdict language is intentional.</strong> The clean result says “No obvious hidden content found,” not “Safe.” A scanner can establish that it did not find a known indicator. It cannot establish the absence of every possible disclosure.</p></div>
+
+        <h2 id="powerpoint">PowerPoint inspection</h2>
+        <p>PowerPoint files in the modern Open XML family are ZIP packages. Safe to Send validates the package, verifies CRC-32 values, enforces decompression limits, then inspects relationships and XML parts directly.</p>
+        <table><thead><tr><th>Area</th><th>Evidence checked</th></tr></thead><tbody>
+          <tr><td>Speaker notes</td><td>Notes-slide relationships and text stored under <code>ppt/notesSlides/</code>.</td></tr>
+          <tr><td>Hidden material</td><td>Slides with <code>show="0"</code>, hidden object properties, and objects positioned entirely outside the slide canvas.</td></tr>
+          <tr><td>Collaboration</td><td>Classic and modern comment parts, authors, people records, and retained collaboration data.</td></tr>
+          <tr><td>Embedded content</td><td>Files under <code>ppt/embeddings/</code>, custom XML parts, VBA projects, and external data relationships.</td></tr>
+          <tr><td>Images</td><td>Crop rectangles, extractable source-image metadata, camera fields, author fields, and GPS coordinates in supported JPEG, PNG, and WebP metadata.</td></tr>
+          <tr><td>Identity</td><td>Core, extended, and custom document properties such as creator, last editor, company, manager, template, and internal custom fields.</td></tr>
+          <tr><td>Package integrity</td><td>Unsafe paths, duplicate names, case collisions, encryption, unsupported compression, size mismatches, CRC failures, and excessive expansion ratios.</td></tr>
+        </tbody></table>
+        <p>Microsoft’s own guidance recommends running Document Inspector on a copy before sharing because presentations can retain hidden data and personal information. Safe to Send complements that workflow by inspecting the final package independently. See <a href="https://support.microsoft.com/en-us/office/collab-files/remove-hidden-data-and-personal-information-by-inspecting-documents-presentations-or-workbooks">Microsoft’s Document Inspector guidance</a>.</p>
+
+        <h2 id="pdf">PDF inspection</h2>
+        <p>PDF is a programmable document format, not a flat image. Safe to Send scans structural markers, document dictionaries, annotations, actions, forms, optional-content layers, revision chains, and supported content streams.</p>
+        <h3>False-redaction heuristic</h3>
+        <p>Supported content streams are tokenized and interpreted with a bounded graphics-state model. The scanner estimates text boxes and filled rectangle geometry. It warns when recoverable text appears substantially covered by a dark opaque rectangle rather than removed.</p>
+        <p>This is a heuristic. Complex transforms, clipping paths, forms, nested graphics, unusual fonts, and unsupported filters can create false positives or false negatives. Findings therefore carry confidence and the report discloses undecoded streams.</p>
+        <h3>Other PDF checks</h3>
+        <ul>
+          <li>Invisible text rendering modes and likely off-page text.</li>
+          <li>Comments, annotations, saved form values, embedded files, JavaScript, launch actions, and submit actions.</li>
+          <li>Optional content groups and multiple cross-reference or end-of-file markers consistent with incremental saves.</li>
+          <li>Authoring metadata in the information dictionary and decoded streams.</li>
+        </ul>
+        <p>Adobe separates redaction from sanitization: redaction removes marked visible content, while sanitization addresses metadata, embedded content, scripts, and other non-visible material. See <a href="https://helpx.adobe.com/acrobat/desktop/protect-documents/redact-pdfs/redacting-sanitizing.html">Adobe’s redaction and sanitization guidance</a>.</p>
+
+        <h2 id="sensitive">Sensitive-value checks</h2>
+        <p>Pattern checks are run only against content already classified as concealed, recoverable, or package-level—not against ordinary visible slide or page text. This reduces noisy findings.</p>
+        <p>Rules cover private-key markers, major token formats, database connection strings, credential-like assignments, internal URLs, email addresses, US Social Security number patterns, validated IBANs, and payment-card candidates that pass the Luhn checksum. Evidence is shortened before it is written to a report.</p>
+
+        <h2 id="severity">Severity and confidence</h2>
+        <table><thead><tr><th>Level</th><th>Meaning</th><th>Typical response</th></tr></thead><tbody>
+          <tr><td>High</td><td>Clear recoverable content, executable material, embedded files, notes, GPS data, or a condition that makes sharing unsafe without review.</td><td>Do not send yet.</td></tr>
+          <tr><td>Medium</td><td>Material that may disclose identity, working data, comments, hidden objects, links, or data depending on context.</td><td>Review and remove if unintended.</td></tr>
+          <tr><td>Low</td><td>Useful context or a weak signal with limited standalone risk.</td><td>Confirm intent.</td></tr>
+          <tr><td>Info</td><td>Format or coverage information that is not itself a disclosure.</td><td>Record or investigate as needed.</td></tr>
+        </tbody></table>
+        <p>Confidence describes the strength of the inference, not the impact. A high-severity, medium-confidence false-redaction finding means the potential impact is serious but the geometric inference should be verified.</p>
+
+        <h2 id="coverage">Coverage model</h2>
+        <p>A scan is marked incomplete when encrypted content, unsupported filters, malformed parts, resource limits, or other conditions prevent an enabled check from reading relevant bytes. An incomplete scan never produces the clean verdict, even when no high-risk finding is present.</p>
+        <p>Defensive limits include maximum file size, ZIP entry count, per-entry expansion, total inflated bytes, compression ratio, XML size, decoded PDF stream size, stream count, and image-metadata size.</p>
+
+        <h2 id="limits">Known limitations</h2>
+        <ul>
+          <li>PDF rendering is not fully implemented. Font metrics, nested form XObjects, clipping, transparency, unusual encodings, image-only content, and uncommon filters can evade geometric checks.</li>
+          <li>Text inside scanned images is not read. The project intentionally has no OCR or remote vision dependency.</li>
+          <li>Password-protected Office files must be decrypted before package inspection.</li>
+          <li>Legacy binary <code>.ppt</code> files are not supported.</li>
+          <li>Image metadata support currently covers EXIF in JPEG/WebP and selected PNG text or EXIF chunks.</li>
+          <li>Application behavior changes. A current source application may retain information not yet represented by a rule.</li>
+        </ul>
+        <div class="callout warning"><p><strong>Do not use the tool as the only control for legal, regulatory, national-security, medical, or similarly consequential disclosure.</strong> Use source-application inspection, true redaction, sanitization, manual review, and an approved delivery process.</p></div>
+
+        <h2 id="security">Security model</h2>
+        <p>The browser build contains no analytics, advertising, remote fonts, remote scripts, upload endpoint, or external API. The page’s Content Security Policy sets <code>connect-src 'none'</code>. Scanning runs in a dedicated worker using the same dependency-free core as the CLI.</p>
+        <p>Untrusted files are handled with explicit bounds. ZIP paths are never written to disk by the browser scanner. The CLI reads files but does not extract archive paths. Reports may contain excerpts from concealed material, so exported reports should be protected accordingly.</p>
+        <p>Security reports should follow the process in <a href="https://github.com/hassanalshama/safe-to-send/blob/main/SECURITY.md">SECURITY.md</a>.</p>
+      </article>
+    </div>
+  </main>
+  <footer class="site-footer"><div class="shell footer-bottom"><span>Safe to Send · local-only document inspection</span><span><a href="./">Scanner</a> · <a href="privacy.html">Privacy</a> · <a href="https://github.com/hassanalshama/safe-to-send">GitHub</a></span></div></footer>
+</body>
+</html>
